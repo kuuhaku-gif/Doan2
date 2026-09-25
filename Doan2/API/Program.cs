@@ -2,6 +2,7 @@
 using BLL.Interfaces;
 using DAL;
 using DAL.Helper;
+using DAL.Interfaces;
 using Doan2.dal.interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,18 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IDatabaseHelper, DatabaseHelper>();
 builder.Services.AddTransient<IMovieRepository, MovieRepository>();
 builder.Services.AddTransient<IMovieBusiness, MovieBusiness>();
+
+// Đăng ký cho Movie
+builder.Services.AddTransient<IMovieRepository, MovieRepository>();
+builder.Services.AddTransient<IMovieBusiness, MovieBusiness>();
+
+// Đăng ký cho User
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IUserBusiness, UserBusiness>();
+
+// Đăng ký cho Ticket
+builder.Services.AddTransient<ITicketRepository, TicketRepository>();
+builder.Services.AddTransient<ITicketBusiness, TicketBusiness>();
 
 var app = builder.Build();
 

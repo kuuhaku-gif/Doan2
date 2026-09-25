@@ -11,6 +11,7 @@ namespace Model
         public string MovieTitle { get; set; }
         public string CinemaRoom { get; set; }
         public DateTime Showtime { get; set; }
+        public string TicketType { get; set; }
         public string Seats { get; set; }
         public decimal Price { get; set; }
         public string Status { get; set; } // "upcoming", "completed", "cancelled"
