@@ -1,4 +1,5 @@
 ﻿using BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model;
 using System;
@@ -47,7 +48,7 @@ namespace API.Controllers
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost("create-movie")]
         public IActionResult CreateMovie([FromBody] MovieModel model)
         {
@@ -61,7 +62,7 @@ namespace API.Controllers
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("delete-movie/{id}")]
         public IActionResult DeleteMovie(int id)
         {

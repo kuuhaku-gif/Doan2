@@ -77,5 +77,46 @@ namespace DAL
                 throw ex;
             }
         }
+        public bool SaveOtp(string email, string otpCode)
+        {
+            string msgError = "";
+            try
+            {
+                var result = _dbHelper.ExecuteNonQuery(out msgError, "sp_user_save_otp",
+                    "@Email", email,
+                    "@OtpCode", otpCode);
+
+                // Nếu SQL báo lỗi (ví dụ email không tồn tại), ném exception để Controller bắt được
+                if (!string.IsNullOrEmpty(msgError))
+                    throw new Exception(msgError);
+
+                return true; // Không bị phụ thuộc vào số dòng trả về
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool VerifyOtpAndResetPassword(string email, string otpCode, string newPassword)
+        {
+            string msgError = "";
+            try
+            {
+                var result = _dbHelper.ExecuteNonQuery(out msgError, "sp_user_verify_otp_and_reset_password",
+                    "@Email", email,
+                    "@OtpCode", otpCode,
+                    "@NewPassword", newPassword);
+
+                if (!string.IsNullOrEmpty(msgError))
+                    throw new Exception(msgError);
+
+                return result > 0;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
