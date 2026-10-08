@@ -7,5 +7,7 @@ namespace BLL.Interfaces
     {
         List<TicketModel> GetTicketsByUser(int userId);
         bool CreateTicket(TicketModel model);
+        bool CheckInTicket(string ticketCode);
+        List<string> GetBookedSeats(int movieId, string cinemaRoom, DateTime showtime);
     }
 }

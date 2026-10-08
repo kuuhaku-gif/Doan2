@@ -15,6 +15,7 @@ namespace DAL
             _dbHelper = dbHelper;
         }
 
+
         public List<TicketModel> GetTicketsByUser(int userId)
         {
             string msgError = "";
@@ -34,6 +35,24 @@ namespace DAL
             }
         }
 
+        public bool CheckInTicket(string ticketCode)
+        {
+            string msgError = "";
+            try
+            {
+                var result = _dbHelper.ExecuteNonQuery(out msgError, "sp_ticket_checkin",
+                    "@TicketCode", ticketCode);
+
+                if (!string.IsNullOrEmpty(msgError))
+                    throw new Exception(msgError);
+
+                return result > 0;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public bool CreateTicket(TicketModel model)
         {
             string msgError = "";
@@ -53,7 +72,45 @@ namespace DAL
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
 
-                return result > 0;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public List<string> GetBookedSeats(int movieId, string cinemaRoom, DateTime showtime)
+        {
+            string msgError = "";
+            var bookedSeats = new List<string>();
+            try
+            {
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_ticket_get_booked_seats",
+                    "@MovieId", movieId,
+                    "@CinemaRoom", cinemaRoom,
+                    "@Showtime", showtime);
+
+                if (!string.IsNullOrEmpty(msgError))
+                    throw new Exception(msgError);
+
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    foreach (System.Data.DataRow row in dt.Rows)
+                    {
+                        // Cột Seats lưu chuỗi như "A1, A2" -> tách nhỏ ra từng ghế
+                        string seatStr = row["Seats"]?.ToString() ?? "";
+                        if (!string.IsNullOrWhiteSpace(seatStr))
+                        {
+                            var seats = seatStr.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                            foreach (var s in seats)
+                            {
+                                bookedSeats.Add(s.Trim());
+                            }
+                        }
+                    }
+                }
+
+                return bookedSeats;
             }
             catch (Exception ex)
             {
