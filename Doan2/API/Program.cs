@@ -70,6 +70,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // 4. Dependency Injection
+builder.Services.AddTransient<IShowtimeRepository, ShowtimeRepository>();
+builder.Services.AddTransient<IShowtimeBusiness, ShowtimeBusiness>();
 builder.Services.AddTransient<IDatabaseHelper, DatabaseHelper>();
 builder.Services.AddTransient<IMovieRepository, MovieRepository>();
 builder.Services.AddTransient<IMovieBusiness, MovieBusiness>();

@@ -89,5 +89,36 @@ namespace API.Controllers
                 return BadRequest(new { success = false, message = ex.Message });
             }
         }
+        // 1. Lấy toàn bộ danh sách vé
+        [Authorize(Roles = "Admin")]
+        [HttpGet("all")]
+        public IActionResult GetAllTickets()
+        {
+            try
+            {
+                var data = _ticketBusiness.GetAllTickets();
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
+
+        // 2. Lấy số liệu thống kê cho Dashboard
+        [Authorize(Roles = "Admin")]
+        [HttpGet("revenue-stats")]
+        public IActionResult GetRevenueStats()
+        {
+            try
+            {
+                var stats = _ticketBusiness.GetDashboardStats();
+                return Ok(new { success = true, data = stats });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+        }
     }
 }

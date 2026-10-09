@@ -7,8 +7,10 @@ namespace DAL.Interfaces
     {
         List<TicketModel> GetTicketsByUser(int userId);
         List<string> GetBookedSeats(int movieId, string cinemaRoom, DateTime showtime);
+        List<TicketModel> GetAllTickets();
+        DashboardStatsModel GetDashboardStats();
         bool CheckInTicket(string ticketCode);
         bool CreateTicket(TicketModel model);
-        
+
     }
 }

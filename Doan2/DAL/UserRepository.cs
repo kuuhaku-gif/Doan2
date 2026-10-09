@@ -49,8 +49,20 @@ namespace DAL
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
 
-                var list = dt.ConvertTo<UserModel>();
-                return list.Count > 0 ? list[0] : null;
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    var row = dt.Rows[0];
+                    return new UserModel
+                    {
+                        UserId = Convert.ToInt32(row["UserId"]),
+                        Email = row["Email"]?.ToString(),
+                        FullName = row["FullName"]?.ToString(),
+                        // BẮT BUỘC: Đảm bảo có dòng map Role này
+                        Role = row["Role"]?.ToString() ?? "User"
+                    };
+                }
+
+                return null; // Sai email hoặc mật khẩu
             }
             catch (Exception ex)
             {

@@ -51,5 +51,14 @@ namespace BLL
         {
             return _res.GetBookedSeats(movieId, cinemaRoom, showtime);
         }
+        public List<TicketModel> GetAllTickets()
+        {
+            return _res.GetAllTickets();
+        }
+
+        public DashboardStatsModel GetDashboardStats()
+        {
+            return _res.GetDashboardStats();
+        }
     }
 }
